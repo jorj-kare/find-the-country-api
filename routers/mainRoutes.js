@@ -7,6 +7,10 @@ router.delete(countryController.deleteAllCountries);
 router
   .route("/editCountryData/:continent")
   .post(countryController.createCountry);
+router
+  .route("/updateCountryData/:countryCode3")
+  .patch(countryController.updateCountry);
+router.route("/updateCountriesData").patch(countryController.updateCountries);
 
 router
   .route("/editContinentData")
@@ -18,5 +22,5 @@ router
 
 router.route("/").get(countryController.getAllCountries);
 router.route("/continent/:continent").get(countryController.getContinent);
-router.route("/country/:id").get(countryController.getCountry);
+router.route("/country/:code3").get(countryController.getCountry);
 module.exports = router;

@@ -20,6 +20,43 @@ exports.createCountry = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.updateCountry = catchAsync(async (req, res, next) => {
+  const data = req.body;
+  // console.log(data);
+  // console.log(req.params.countryCode3);
+  const countryData = data.filter(
+    (c) => c.properties.ISO_A3 === req.params.countryCode3
+  );
+
+  const country = await Country.findOne({
+    "properties.ISO_A3": req.params.countryCode3,
+  });
+  console.log(country);
+
+  country.geometry.coordinates = countryData[0].geometry.coordinates;
+
+  await country.save();
+  res.status(201).json({
+    status: "success",
+    data: country,
+  });
+});
+exports.updateCountries = catchAsync(async (req, res, next) => {
+  const data = req.body;
+
+  data.forEach(async (d) => {
+    await Country.updateOne(
+      { "properties.ISO_A3": d.properties.ISO_A3 },
+      { "geometry.coordinates": d.geometry.coordinates }
+    );
+  });
+
+  res.status(201).json({
+    status: "success",
+    data: "",
+  });
+});
+
 exports.deleteAllCountries = catchAsync(async (req, res, next) => {
   await Country.deleteMany();
   res.status(204).json({
@@ -80,9 +117,11 @@ exports.getAllCountries = catchAsync(async (req, res) => {
 });
 
 exports.getCountry = catchAsync(async (req, res, next) => {
-  const country = await Country.findById(req.params.id);
+  const country = await Country.findOne({
+    "properties.ISO_A3": req.params.code3,
+  });
 
-  if (!country) return next(new AppError("No country with that id"));
+  if (!country) return next(new AppError("No country with that code"));
   res.status(200).json({
     status: "success",
     data: {
