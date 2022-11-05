@@ -6,11 +6,12 @@ const AppError = require("../utils/appError");
 
 exports.createCountry = catchAsync(async (req, res, next) => {
   const data = getData(req.params.continent);
-  const continent = await Continent.findOne({ name: "Oceania" });
+  const continent = await Continent.findOne({ name: req.params.continent });
   data.forEach((el) => {
     el.continent = continent._id;
   });
-  const countries = await Country.create(...data);
+  // const countries = await Country.create(...data);
+  const countries = [...data];
 
   res.status(200).json({
     status: "success",
