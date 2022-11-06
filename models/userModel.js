@@ -42,7 +42,7 @@ userSchema.pre("save", async function (next) {
   this.passwordConfirm = undefined;
 });
 
-userSchema.method.isPasswordCorrect = async function (
+userSchema.methods.isPasswordCorrect = async function (
   providedPassword,
   hashedPassword
 ) {
