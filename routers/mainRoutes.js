@@ -4,16 +4,14 @@ const countryController = require("../controllers/mainController");
 const router = express.Router();
 router.delete(countryController.deleteAllCountries);
 
-router
-  .route("/editCountryData/:continent")
-  .post(countryController.createCountry);
+router.route("/createCountry/:continent").post(countryController.createCountry);
 router
   .route("/updateCountryData/:countryCode3")
   .patch(countryController.updateCountry);
 router.route("/updateCountriesData").patch(countryController.updateCountries);
 
 router
-  .route("/editContinentData")
+  .route("/createContinent")
   .post(countryController.createContinent)
   .delete(countryController.deleteAllContinents);
 router
