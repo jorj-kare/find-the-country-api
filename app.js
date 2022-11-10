@@ -3,6 +3,7 @@ const hpp = require("hpp");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
+const cookieParser = require("cookie-parser");
 const reateLimit = require("express-rate-limit");
 const mainRouter = require("./routers/mainRoutes");
 const userRouter = require("./routers/userRoutes");
@@ -11,7 +12,7 @@ const AppError = require("./utils/appError");
 
 const app = express();
 // GLOBAL MIDDLEWARE
-
+app.use(cookieParser());
 // Set security http headers
 app.use(helmet());
 // Prevent parameter pollution
