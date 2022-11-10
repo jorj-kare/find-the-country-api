@@ -1,9 +1,15 @@
 const express = require("express");
 const countryController = require("../controllers/mainController");
+const userController = require("../controllers/userController");
 
 const router = express.Router();
-router.delete(countryController.deleteAllCountries);
 
+router.route("/").get(countryController.getAllCountries);
+router.route("/continent/:continent").get(countryController.getContinent);
+router.route("/country/:code3").get(countryController.getCountry);
+
+router.use(userController.protect);
+router.use(userController.restrictToAdmin);
 router.route("/createCountry/:continent").post(countryController.createCountry);
 router
   .route("/updateCountryData/:countryCode3")
@@ -17,8 +23,5 @@ router
 router
   .route("/editContinentData/:continent")
   .patch(countryController.updateContinent);
-
-router.route("/").get(countryController.getAllCountries);
-router.route("/continent/:continent").get(countryController.getContinent);
-router.route("/country/:code3").get(countryController.getCountry);
+router.delete(countryController.deleteAllCountries);
 module.exports = router;
