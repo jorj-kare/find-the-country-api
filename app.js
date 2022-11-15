@@ -1,16 +1,21 @@
 const express = require("express");
 const hpp = require("hpp");
 const xss = require("xss-clean");
+const path = require("path");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const reateLimit = require("express-rate-limit");
 const mainRouter = require("./routers/mainRoutes");
 const userRouter = require("./routers/userRoutes");
+const viewRouter = require("./routers/viewRoutes");
 const globalErrorHandler = require("./controllers/errorController");
 const AppError = require("./utils/appError");
 
 const app = express();
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
 // GLOBAL MIDDLEWARE
 app.use(cookieParser());
 // Set security http headers
@@ -46,7 +51,7 @@ app.use((req, res, next) => {
   res.append("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
-
+app.use("/", viewRouter);
 app.use("/api/v1", mainRouter);
 app.use("/api/v1/users", userRouter);
 app.all("*", (req, res, next) => {
