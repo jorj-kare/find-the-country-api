@@ -23,11 +23,11 @@ exports.createCountry = catchAsync(async (req, res, next) => {
 exports.updateCountry = catchAsync(async (req, res, next) => {
   const data = req.body;
   const countryData = data.filter(
-    (c) => c.properties.ISO_A3 === req.params.countryCode3
+    (c) => c.properties.ISO_A3 === req.params.code3
   );
 
   const country = await Country.findOne({
-    "properties.ISO_A3": req.params.countryCode3,
+    "properties.ISO_A3": req.params.code3,
   });
 
   country.geometry.coordinates = countryData[0].geometry.coordinates;
@@ -62,7 +62,7 @@ exports.deleteAllCountries = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createContinent = catchAsync(async (req, res, next) => {
+exports.createContinents = catchAsync(async (req, res, next) => {
   const data = getContinentData();
   const continents = await Continent.create(...data);
   res.status(200).json({
