@@ -45,10 +45,22 @@ app.use(express.json({ limit: "50mb" }));
 
 // Serving static files
 app.use(express.static(`${__dirname}/public`));
+
 app.use((req, res, next) => {
-  res.append("Access-Control-Allow-Origin", ["*"]);
-  res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.append("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://find-the-country-svelte.netlify.app"
+  );
+
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization,X-Auth-Token"
+  );
+
   next();
 });
 app.use("/", viewRouter);
