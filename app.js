@@ -4,6 +4,7 @@ const xss = require("xss-clean");
 const path = require("path");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const reateLimit = require("express-rate-limit");
 const mainRouter = require("./routers/mainRoutes");
@@ -20,6 +21,7 @@ app.set("view engine", "pug");
 app.use(cookieParser());
 // Set security http headers
 app.use(helmet());
+
 // Prevent parameter pollution
 app.use(
   hpp({
@@ -41,17 +43,21 @@ app.use(mongoSanitize());
 
 app.use(xss());
 
+app.use(
+  cors({
+    origin: [
+      "https://find-the-country-svelte.netlify.app",
+      "https://map-country.netlify.app",
+    ],
+  })
+);
+
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: "50mb" }));
 
 // Serving static files
 app.use(express.static(`${__dirname}/public`));
-app.use((req, res, next) => {
-  res.append("Access-Control-Allow-Origin", ["*"]);
-  res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.append("Access-Control-Allow-Headers", "Content-Type");
-  next();
-});
+
 app.use("/", viewRouter);
 app.use("/api/v1", mainRouter);
 app.use("/api/v1/users", userRouter);
