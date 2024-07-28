@@ -46,8 +46,12 @@ app.use(xss());
 app.use(
   cors({
     origin: [
+      "https://find-the-country-js.vercel.app/",
+      "https://find-the-country-js.vercel.app",
       "https://find-the-country-svelte.netlify.app",
-      "https://map-country.netlify.app",
+      "https://find-the-country-svelte.netlify.app/",
+      "http://localhost:5173",
+      "http://localhost:3000",
     ],
   })
 );
