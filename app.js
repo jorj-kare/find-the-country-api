@@ -49,7 +49,7 @@ app.use(express.static(`${__dirname}/public`));
 app.use((req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://find-the-country-svelte.netlify.app"
+    "https://find-the-country-js.vercel.app"
   );
 
   res.header(
